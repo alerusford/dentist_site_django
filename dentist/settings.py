@@ -1,5 +1,5 @@
 from pathlib import Path
-import os
+import os.path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,8 +14,7 @@ SECRET_KEY = 'django-insecure-(-9q(x)^ifs+293r0_5$wtgu(7h3%#&mj&*p#7sh3tyjxuh%%8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -108,16 +107,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 # STATIC_URL = 'static/'
+# STATIC_ROOT = BASE_DIR / 'static'
 
+# if DEBUG:
+#     # STATIC_ROOT = BASE_DIR / 'static'
+#     STATICFILES_DIRS = [BASE_DIR / 'static']
+# else:
+#     STATIC_ROOT = BASE_DIR / 'static'
+
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-if DEBUG:
-    # STATICFILES_DIRS = [BASE_DIR / 'static']
-    STATIC_ROOT = BASE_DIR / 'static'
-else:
-    STATIC_ROOT = BASE_DIR / 'static'
+if not DEBUG:
+    STATIC_ROOT = ''
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static/'),
+]
+
+
+# todo смотри видос, че за whitenoise, на нем падает вся статика
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
